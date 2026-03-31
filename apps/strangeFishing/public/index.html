@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Strange fishing</title>
+
+    <link rel="stylesheet" href="../assets/css/styles.css">
+</head>
+
+<body>
+    <h1>Strange Fishing</h1>
+    <a href="/portfolio/public/index.php" class="back-link">Back to Portfolio</a>
+
+    <!-- GAME ROOT -->
+<div class="fishing-game">
+
+    <div id="fishingGameRoot"></div>
+
+    <div class="fishing-game__hud">
+        <div id="hudTimer">30</div>
+        <div id="scoreBoard">Score</div>
+    </div>
+
+    <p id="message"></p>
+
+    <div id="fishControls">
+        <button id="btnStartGame" class="btn">PLAY</button>
+        <button id="btnCancelGame" class="btn" style="display: none;">CANCEL</button>
+    </div>
+
+</div>
+    <!-- ENTRY POINT -->
+    <script type="module" src="../assets/js/main.js"></script>
+</body>
+
+</html>
