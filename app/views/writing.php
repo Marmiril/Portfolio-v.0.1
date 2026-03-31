@@ -33,8 +33,8 @@ $content = '';
     }
 ?>
 <section class="writing-wrapper">
-
-    <div class="writing-bg" style="background-image: url('<?= $bg ?>')"></div>
+<div class="writing-bg" style="background-image: url('<?= $bg ?>')"></div>
+    
 
     <div class="writing">
         <h1><?= htmlspecialchars($title) ?></h1>

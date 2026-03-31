@@ -23,6 +23,10 @@ $currentView = $_GET['v'] ?? 'home';
                 <a href="<?= BASE_URL ?>/public/index.php?v=writsList">Writings</a>
             <?php endif ?>
 
+            <?php if($currentView !== 'minigames'): ?>
+                <a href="<?= BASE_URL ?>/public/index.php?v=minigames">Minigames</a>
+            <?php endif ?>
+
             <a href="<?= BASE_URL ?>/public/index.php?v=skills">Skills</a>
             <a href="<?= BASE_URL ?>/public/index.php?v=projects">Projects</a>            
         </nav>
