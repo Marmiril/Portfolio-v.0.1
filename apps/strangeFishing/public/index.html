@@ -11,26 +11,26 @@
 
 <body>
     <h1>Strange Fishing</h1>
-    <a href="/portfolio/public/index.php" class="back-link">Back to Portfolio</a>
+    <a href="/index.php?v=minigames" class="back-link">Back to Portfolio</a>
 
     <!-- GAME ROOT -->
-<div class="fishing-game">
+    <div class="fishing-game">
 
-    <div id="fishingGameRoot"></div>
+        <div id="fishingGameRoot"></div>
 
-    <div class="fishing-game__hud">
-        <div id="hudTimer">30</div>
-        <div id="scoreBoard">Score</div>
+        <div class="fishing-game_hud">
+            <div id="hudTimer">30</div>
+            <div id="scoreBoard">Score</div>
+        </div>
+
+        <p id="message"></p>
+
+        <div id="fishControls">
+            <button id="btnStartGame" class="btn">PLAY</button>
+            <button id="btnCancelGame" class="btn" style="display: none;">CANCEL</button>
+        </div>
+
     </div>
-
-    <p id="message"></p>
-
-    <div id="fishControls">
-        <button id="btnStartGame" class="btn">PLAY</button>
-        <button id="btnCancelGame" class="btn" style="display: none;">CANCEL</button>
-    </div>
-
-</div>
     <!-- ENTRY POINT -->
     <script type="module" src="../assets/js/main.js"></script>
 </body>

@@ -1,6 +1,8 @@
 <?php
+
 $writsDir = BASE_PATH . '/app/data/writings';
-$files = scandir($writsDir); // scandir se encarga de listar los archivos.
+$files = scandir($writsDir);
+
 ?>
 
 <section class="gallery">
@@ -10,10 +12,12 @@ $files = scandir($writsDir); // scandir se encarga de listar los archivos.
     </div>
 
     <div class="gallery-grid">
-        <?php foreach ($files as $file): ?>
+        <?php foreach($files as $file): ?>
 
             <?php
-            if (pathinfo($file, PATHINFO_EXTENSION) !== 'txt') continue;
+            if (pathinfo($file, PATHINFO_EXTENSION) !== 'txt') {
+                continue;
+            }
 
             $id = pathinfo($file, PATHINFO_FILENAME);
             $path = $writsDir . '/' . $file;
@@ -23,9 +27,9 @@ $files = scandir($writsDir); // scandir se encarga de listar los archivos.
 
             $img = BASE_URL . "/assets/img/writings/$id.jpg";
             ?>
-
-            <a href="<?= BASE_URL ?>/public/index.php?v=writing&id=<?= $id ?>" class="gallery-item">
-
+            
+            <a href="<?= INDEX_URL ?>?v=writing&id=<?= $id ?>" class="gallery-item">
+            
                 <img src="<?= $img ?> " alt="<?= htmlspecialchars($title) ?>">
 
                 <h3 class="writing-title">
@@ -33,9 +37,8 @@ $files = scandir($writsDir); // scandir se encarga de listar los archivos.
                 </h3>
 
             </a>
-
+        
         <?php endforeach ?>
 
     </div>
-
 </section>

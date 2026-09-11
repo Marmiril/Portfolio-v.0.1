@@ -47,7 +47,7 @@ h1 {
     position: relative;
     z-index: 1;
 
-        border: 2px solid #00eaff;
+    border: 2px solid #00eaff;
     box-shadow:
         0 0 10px #00eaff,
         0 0 20px rgba(0, 234, 255, 0.6),
@@ -79,7 +79,7 @@ h1 {
    FISHES
 ========================= */
 
-.fishing-game__fish {
+.fishing-game_fish {
     position: absolute;
     width: 70px;
     height: 70px;
@@ -93,8 +93,8 @@ h1 {
 
 /* IMAGEN BASE */
 
-.fishing-game__fish-base,
-.fishing-game__fish-shine {
+.fishing-game_fish-base,
+.fishing-game_fish-shine {
     position: absolute;
     inset: 0;
 
@@ -104,14 +104,14 @@ h1 {
     display: block;
 }
 
-.fishing-game__fish-base {
+.fishing-game_fish-base {
     z-index: 1;
 }
 
 /* =========================
     CAPA DE BRILLO 
 ========================= */
-.fishing-game__fish-shine {
+.fishing-game_fish-shine {
     z-index: 2;
     opacity: 0;
     pointer-events: none;
@@ -119,11 +119,11 @@ h1 {
     filter: brightness(3.8) saturate(1.4);
 }
 
-#fishingGameRoot.playing .fishing-game__fish {
+#fishingGameRoot.playing .fishing-game_fish {
     cursor: url('../img/cursor.png')32 32, auto;
 }
 
-#fishingGameRoot.playing .fishing-game__fish:hover .fishing-game__fish-shine {
+#fishingGameRoot.playing .fishing-game_fish:hover .fishing-game_fish-shine {
     animation: fish-shine-layer 0.18s linear;
 }
 
@@ -149,7 +149,7 @@ h1 {
    HUD
 ========================= */
 
-.fishing-game__hud {
+.fishing-game_hud {
     position: absolute;
     top: 15px;
     left: 15px;
@@ -171,7 +171,7 @@ h1 {
     z-index: 10;
 }
 
-.fishing-game__hud div {
+.fishing-game_hud div {
     display: flex;
     align-items: center;
     gap: 8px;
@@ -233,7 +233,7 @@ h1 {
 .action-box-overlay {
     position: fixed;
     inset: 0;
-    /* background: rgbs(0, 0, 0, 0.4); */
+   
 
     display: flex;
     justify-content: center;

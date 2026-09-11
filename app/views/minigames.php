@@ -6,17 +6,32 @@
 
     <div class="minigames-grid">
         <?php
-        $minigames_img = [
-            'strange_fishing.jpg'
+        $minigames = [
+            [
+                'img' => 'strange_fishing.jpg',
+                'href' => BASE_URL . '/apps/StrangeFishing/public/index.html',
+                'download' => false
+            ],
+            [
+                'img' => 'evolupong.jpg',
+                'href' => BASE_URL . '/assets/download/Evolupong.zip',
+                'download' => true
+            ]
         ];
-        foreach ($minigames_img as $game_img): ?>
-            <a href="<?= BASE_URL ?>/apps/StrangeFishing/public/index.html" class="minigame-card">
+        foreach ($minigames as $game): ?>
+            <a
+                href="<?= $game['href'] ?>"
+                class="minigame-card"
+                <?= $game['download'] ? 'download' : '' ?>>
                 <img
-                    src="<?= BASE_URL ?>/assets/img/minigames/<?= $game_img ?>"
-                    class="minigame-img">
+                    src="<?= BASE_URL ?>/assets/img/minigames/<?= $game['img'] ?>"
+                    class="minigame-img"
+                    alt="">
             </a>
-        <?php endforeach; ?>
-    </div>
+        <?php endforeach ?>
 
+
+
+    </div>
 
 </section>

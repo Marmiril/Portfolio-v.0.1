@@ -1,21 +1,23 @@
-import { initRandomFish } from "../utils/randomFish.js";
-import { showActionBox } from "../ui/actionBox.js";
-import { closeActionBox } from '../ui/actionBox.js';
-import { playBackgroundSound,
-         playLoseSound,
-         playPointSound,
-         playWinSound,
-         playBeginSound,
-         playCancelSound } from '../audio/soundManager.js';
+import { initRandomFish } from '../utils/randomFish.js';
+import { showActionBox, closeActionBox } from '../ui/actionBox.js';
+import {
+    playBackgroundSound,
+    playLoseSound,
+    playPointSound,
+    playWinSound,
+    playBeginSound,
+    playCancelSound
+} from '../audio/SoundManager.js';
 
 export function initFishGameController() {
     const btnStartGame = document.getElementById('btnStartGame');
-    const btnCancelGame = document.getElementById('btnCancelGame')
+    const btnCancelGame = document.getElementById('btnCancelGame');
     const hudTimer = document.getElementById('hudTimer');
     const scoreBoard = document.getElementById('scoreBoard');
 
     const fishes = [];
     const root = document.getElementById('fishingGameRoot');
+
     let isPlaying = false;
     let gameTimer = null;
     let spawnTimer = null;
@@ -39,8 +41,7 @@ export function initFishGameController() {
     // CLEAR SCREEN
     function clearFishes() {
         fishes.length = 0;
-        document.querySelectorAll('.fishing-game__fish')
-            .forEach(el => el.remove());
+        document.querySelectorAll('.fishing-game_fish').forEach(el => el.remove());
     }
 
     // ANIMATE
@@ -50,7 +51,6 @@ export function initFishGameController() {
     }
 
     btnStartGame.addEventListener('click', () => { actionGame(); });
-
     btnCancelGame.addEventListener('click', () => { cancelGame(); });
 
     function clickScore(fish) {
@@ -62,7 +62,6 @@ export function initFishGameController() {
             playPointSound();
 
             scoreBoard.textContent = `Score: ${score}`;
-
             if (fishes.length === score) {
                 winBox();
 
@@ -84,19 +83,17 @@ export function initFishGameController() {
 
         spawnTimer = setInterval(() => {
 
-            const now = performance.now();
+            const now = performance.now()
             const elapsed = now - startTime;
 
-            // Fish Generation
+            // FISH SPAWNING
             for (let i = 0; i < unitsPerTick; i++) {
                 const name = `Fish_0${fishes.length + 1}`;
                 const fish = initRandomFish(name);
                 clickScore(fish);
                 fishes.push(fish);
-            }  // STOP
-            if (elapsed >= durationMs) {
-                clearInterval(spawnTimer);
-            }
+            } //STOP
+            if (elapsed >= durationMs) { clearInterval(spawnTimer); }
         }, frequencyMs);
     }
 
@@ -117,9 +114,8 @@ export function initFishGameController() {
             clearFishes();
             demoFishes();
         }
-        
+
         isPlaying = true;
-        // if (message) { message.textContent = ''; }
 
         timeLeft = 30;
         const durationMs = timeLeft * 1000;
@@ -128,9 +124,7 @@ export function initFishGameController() {
         score = 0;
         scoreBoard.textContent = `Score: ${score}`;
 
-        fishes.forEach(fish => {
-            fish.show();
-        });
+        fishes.forEach(fish => { fish.show(); });
 
         btnStartGame.style.display = 'none';
         btnCancelGame.style.display = 'block';
@@ -139,7 +133,6 @@ export function initFishGameController() {
             timeLeft--;
             hudTimer.textContent = timeLeft;
             if (timeLeft <= 0) {
-
                 isPlaying = false;
 
                 if (score != fishes.length) { timeOverBox(); }
@@ -151,18 +144,16 @@ export function initFishGameController() {
                 btnCancelGame.style.display = 'none';
             }
         }, 1000);
-
     }
 
     function cancelGame() {
-        console.log(fishes.length);
         isPlaying = false;
         root.classList.remove('playing');
 
         playCancelSound();
         showActionBox({
             title: 'CANCEL GAME',
-            message: 'Start new game?',
+            message: 'Start a new game?',
             type: 'decision',
             actions: [
                 {
@@ -170,36 +161,35 @@ export function initFishGameController() {
                     action: () => {
                         clearFishes();
                         demoFishes();
-                        actionGame(); }
+                        actionGame();
+                    }
                 },
                 {
                     label: 'NO',
-                    action: () => { closeActionBox(); }
+                    action: () => { closeActionBox() }
                 }
             ]
         });
 
         clearInterval(gameTimer);
         clearInterval(spawnTimer);
-        // clearFishes();
 
         timeLeft = 30;
         hudTimer.textContent = timeLeft;
+
         score = 0;
+        scoreBoard.textContent = `Score: ${score}`;
 
         btnStartGame.style.display = 'block';
         btnCancelGame.style.display = 'none';
-
-        scoreBoard.textContent = `Score: ${score}`;
-       // demoFishes();
-
     }
 
     function winBox() {
         playWinSound();
         root.classList.remove('playing');
+
         showActionBox({
-            title: 'VICTORY. You fished all the fishes!',
+            title: 'VICTORY. You fished all the fishes',
             message: 'Play again?',
             type: 'decision',
             actions: [
@@ -208,15 +198,16 @@ export function initFishGameController() {
                     action: () => {
                         clearFishes();
                         demoFishes();
-                        actionGame();       
-                        hudTimer.textContent = 30;                                        
+                        actionGame();
+                        hudTimer.textContent = 30;
                     }
                 },
                 {
                     label: 'NO',
                     action: () => {
                         hudTimer.textContent = 30;
-                        resetGame(); }
+                        resetGame();
+                    }
                 }
             ]
         });
@@ -225,7 +216,7 @@ export function initFishGameController() {
     function timeOverBox() {
         playLoseSound();
         root.classList.remove('playing');
-        showActionBox({            
+        showActionBox({
             title: 'TIME-OVER - YOU LOSER!!',
             message: 'Play again?',
             type: 'decision',
@@ -245,9 +236,9 @@ export function initFishGameController() {
                         closeActionBox();
                         hudTimer.textContent = 30;
                     }
-
                 }
             ]
         });
     }
 }
+

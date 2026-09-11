@@ -1,3 +1,11 @@
+<?php
+
+$imagesDir = BASE_PATH . '/public/assets/img/gallery';
+$images = scandir($imagesDir);
+
+?>
+
+
 <section class="gallery">
 
     <div class="gallery-header">
@@ -5,32 +13,26 @@
     </div>
 
     <div class="gallery-grid">
-        <?php
-        $images = [
-            'awards.jpg',
-            'charity.jpg',
-            'nobel.jpg',
-            'demostration.jpg',
-            'greenpeace.jpg',
-            'nature_chad.jpg',
-            'onu.jpg',
-            'oscars.jpg',
-            'pope.jpg',
-            'trump.jpg',
-            'volunteer.jpg'
-        ];
 
-        foreach ($images as $img): ?>
+        <?php foreach ($images as $image): ?>
+
+            <?php
+            if (pathinfo($image, PATHINFO_EXTENSION) !== 'jpg') {
+                continue;
+            }
+            ?>
             <div class="gallery-item">
                 <img
-                    src="<?= BASE_URL ?>/assets/img/gallery/<?= $img ?>"
-                    data-full="<?= BASE_URL ?>/assets/img/gallery/<?= $img ?>"
-                    class="gallery-img">
+                    src="<?= BASE_URL ?>/assets/img/gallery/<?= $image ?>"
+                    data-full="<?= BASE_URL ?>/assets/img/gallery/<?= $image ?>"
+                    class="gallery-img"
+                    alt="">
             </div>
-        <?php endforeach; ?>
+        <?php endforeach ?>
     </div>
-    
+
     <div id="lightbox" class="lightbox hidden">
-        <img id="lightbox-img" src="">
+        <img id="lightbox-img" src="" alt="">
     </div>
+
 </section>

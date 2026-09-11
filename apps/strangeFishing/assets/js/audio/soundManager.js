@@ -1,9 +1,9 @@
-const backgroundSound = new Audio('../assets/sounds/background.mp3');
-const loseSound = new Audio('../assets/sounds/lose.mp3');
-const pointSound = new Audio('../assets/sounds/point.mp3');
-const winSound = new Audio('../assets/sounds/win.mp3');
-const beginSound = new Audio('../assets/sounds/begin.mp3');
-const cancelSound = new Audio('../assets/sounds/cancel.mp3');
+const backgroundSound = new Audio('../assets/audio/background.mp3');
+const loseSound = new Audio('../assets/audio/lose.mp3');
+const pointSound = new Audio('../assets/audio/point.mp3');
+const winSound = new Audio('../assets/audio/win.mp3');
+const beginSound = new Audio('../assets/audio/begin.mp3');
+const cancelSound = new Audio('../assets/audio/cancel.mp3');
 
 backgroundSound.loop = true;
 

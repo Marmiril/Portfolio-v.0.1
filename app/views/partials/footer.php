@@ -1,3 +1,3 @@
 <footer>
-    <p>&copy; <?= date("Y") ?> Ag Sys</p>     
+    <p>&copy; <?= date("Y") ?> Ag Sys</p>
 </footer>

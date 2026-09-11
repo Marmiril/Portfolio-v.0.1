@@ -4,45 +4,46 @@ export class Fish {
         this.name = name;
         this.image = image;
 
-        // Postion
+        // Position
         this.x = x;
         this.y = y;
 
-        this.movementType = movementType; // String
+        this.movementType = movementType;
         this.container = container;
 
-        // DIRECTION
+        // Direction
         this.directionX = 1;
         this.directionY = 1;
 
-        // SPEED
+        // Speed
         this.speed = 2;
 
+        // Zigzag movement
         this.amplitude = amplitude;
         this.frequency = frequency;
 
+        // Size
         this.size = size;
-        
+
         // CREATES HTML ELEMENT
         this.element = document.createElement('div');
-        this.element.className = 'fishing-game__fish';
+        this.element.className = 'fishing-game_fish';
 
-        // SET IMG INSIDE ELEMENT
+        // SET IMAGE INSIDE ELEMENT
         this.img = document.createElement('img');
         this.img.src = this.image;
-        this.img.className = 'fishing-game__fish-base';
+        this.img.className = 'fishing-game_fish-base';
 
         // THE SHINNING
         this.shineImg = document.createElement('img');
         this.shineImg.src = this.image;
-        this.shineImg.className = 'fishing-game__fish-shine';
-        
+        this.shineImg.className = 'fishing-game_fish-shine';
+
         this.element.appendChild(this.img);
         this.element.appendChild(this.shineImg);
 
-
-        this.element.style.width = this.size + 'px';
-        this.element.style.height = this.size + 'px';
+        this.element.style.width = this.size + "px";
+        this.element.style.height = this.size + "px";
 
         // SET ELEMENT IN DOM
         this.container.appendChild(this.element);
@@ -51,25 +52,17 @@ export class Fish {
         this.updatePosition();
     }
 
-    /* =========================
-       UI METHODS
-    ========================= */
+    /**
+     * UI METHODS
+     */
 
-    show() {
-        this.element.style.display = 'block';
-    }
+    show() { this.element.style.display = 'block'; }
 
-    hide() {
-        this.element.style.display = 'none';
-    }
+    hide() { this.element.style.display = 'hide'; }
 
-    onMouseDown(callback) {
-        this.element.addEventListener('mousedown', callback);
-    }
+    onMouseDown(callback) { this.element.addEventListener('mousedown', callback); }
 
-
-
-    // MAIN METHOD SUMMONED EACHFRAME
+    // MAIN METHOD SUMMONED EACH FRAME
     move() {
         const fishWidth = this.element.clientWidth;
         const fishHeight = this.element.clientHeight;
@@ -91,7 +84,8 @@ export class Fish {
                 this.moveDiagonal(fishWidth, fishHeight);
                 break;
         }
-        // ACTUALIZE POSTION ON SCREEN
+
+        // Actualice position on screen
         this.updatePosition();
     }
 
@@ -101,16 +95,15 @@ export class Fish {
     }
 
     movezigzagX(fishWidth, fishHeight) {
-        this.x += this.speed * this.directionX; //** */
-        // SENOIDAL MOVEMENT FOR ZIGZAG MOVEMENT.
+        this.x += this.speed * this.directionX;
+        // SENOIDAL MOVEMENT FOR ZIGZAG MOVEMENT
         this.y += Math.sin(this.x * this.frequency) * this.amplitude * this.directionY;
         this.handleBounds(fishWidth, fishHeight);
     }
 
     movezigzagY(fishWidth, fishHeight) {
-        this.y += this.speed * this.directionY; //** ese '+ 1' es experimental */
-        // SENOIDAL MOVEMENT FOR ZIGZAG MOVEMENT.
-        this.x += Math.sin(this.y * this.frequency) * this.amplitude * this.directionX;
+        this.y += this.speed * this.directionY;
+        this.x = Math.sin(this.y * this.frequency) * this.amplitude * this.directionX;
         this.handleBounds(fishWidth, fishHeight);
     }
 
@@ -120,33 +113,37 @@ export class Fish {
     }
 
     moveDiagonal(fishWidth, fishHeight) {
-        // SIMULTANEUS MOVEMENT.
-        this.x += this.speed * this.directionX;
-        this.y += this.speed * this.directionY;
+        this.x += this.speed + this.directionX;
+        this.y += this.speed + this.directionY;
         this.handleBounds(fishWidth, fishHeight);
     }
 
     handleBounds(fishWidth, fishHeight) {
-        // HORIZONTAL RICOCHET
+
+        // Horizontal ric.
         if (this.x <= 0) {
             this.directionX *= -1;
             this.flip();
             // Secure position
             this.x = 0;
-            }
+        }
+
         if (this.x >= this.container.clientWidth - fishWidth) {
             this.directionX *= -1;
-            this.flip();        
-            // Secure position
+            this.flip();
             this.x = this.container.clientWidth - fishWidth;
         }
-        // VERTICAL RIC.
+
+        // Vertical ric.
         if (this.y <= 0) {
             this.directionY *= -1;
+            this.flip();
             this.y = 0;
         }
-        if ( this.y >= this.container.clientHeight - fishHeight) {
+
+        if (this.y >= this.container.clientHeight - fishHeight) {
             this.directionY *= -1;
+            this.flip();
             this.y = this.container.clientHeight - fishHeight;
         }
     }
@@ -158,4 +155,7 @@ export class Fish {
         this.element.style.left = `${this.x}px`;
         this.element.style.top = `${this.y}px`;
     }
+
 }
+
+

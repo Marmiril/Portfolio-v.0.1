@@ -1,0 +1,6 @@
+PORTFOLIO_PROD
+ITINERE
+
+1 - Define config.php para rutas de url públicas (BASE_URL) y rutas privadas del servidor(BASE_PATH)
+2 - Modificación de rutas de stylesheet en app/views/layouts/base.php.
+3 - Mod. de rutas en app/views/partials/header.php

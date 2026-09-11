@@ -1,16 +1,16 @@
-export function  showActionBox(config) {
+export function showActionBox(config) {
 
-    const { title, message, actions, type='neutral', dismisible = false } = config;
+    const { title, message, actions, type = "neutral", dismisible = false } = config;
 
-    if ( !title || !message || !Array.isArray(actions) || actions.length === 0) {
-            console.log('actionBox: wrong config!');
+    if (!title || !message || !Array.isArray(actions) || actions.length === 0) {
+        console.log('actionBox: wrong config');
         return;
     }
 
     // OVERLAY
     const overlay = document.createElement('div');
     overlay.id = 'actionBoxOverlay';
-    overlay.className = 'action-box-overlay';
+    overlay.classnName = 'action-box-overlay';
 
     // BOX
     const box = document.createElement('div');
@@ -28,18 +28,19 @@ export function  showActionBox(config) {
     // ACTIONS
     const actionsContainer = document.createElement('div');
     actionsContainer.className = 'action-box-actions';
-        
+
     actions.forEach(({ label, action }) => {
         const btn = document.createElement('button');
         btn.type = 'button';
         btn.textContent = label;
 
-        btn.addEventListener('click', ()=> {
+        btn.addEventListener('click', () => {
             closeActionBox();
             if (typeof action === 'function') {
-                action(); 
+                action();
             }
         });
+
         actionsContainer.appendChild(btn);
     });
 
@@ -47,11 +48,13 @@ export function  showActionBox(config) {
     box.appendChild(p);
     box.appendChild(actionsContainer);
 
+
     overlay.appendChild(box);
     document.body.appendChild(overlay);
 
     requestAnimationFrame(() => {
-        void box.offsetWidht;
+        // Force reflow
+        void box.offsetWidth;
         box.classList.add('is-active');
     });
 }
@@ -72,5 +75,5 @@ export function closeActionBox() {
     box.addEventListener('transitionend', () => {
         overlay.remove();
         box.remove();
-    }, {once: true});
-}    
+    }, { once: true });
+}

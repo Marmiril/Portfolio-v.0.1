@@ -27,4 +27,4 @@ if (!isset($views[$viewKey])) {
 $view = $views[$viewKey];
 
 // Render layout
-require BASE_PATH . '/app/views/layouts/base.php';
+require_once BASE_PATH . '/app/views/layouts/base.php';
