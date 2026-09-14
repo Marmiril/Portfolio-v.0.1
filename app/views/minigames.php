@@ -9,7 +9,7 @@
         $minigames = [
             [
                 'img' => 'strange_fishing.jpg',
-                'href' => BASE_URL . '/apps/StrangeFishing/public/index.html',
+                'href' => BASE_URL . '/apps/strangeFishing/public/index.html',
                 'download' => false
             ],
             [

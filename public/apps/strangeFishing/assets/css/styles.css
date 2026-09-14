@@ -1,0 +1,316 @@
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&display=swap');
+
+body {
+    margin: 0;
+    background: url('../img/water00.png') center/cover no-repeat;
+    overflow: hidden;
+    min-height: 100vh;
+}
+
+body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+
+    background: url('../img/water00.png') center/cover no-repeat;
+
+    filter: blur(10px);
+
+    z-index: 0;
+}
+
+h1 {
+    margin: 0;
+    padding: 40px 0;
+
+    font-family: 'Playfair Display', serif;
+    font-weight: 700;
+    font-size: 48px;
+
+    letter-spacing: 2px;
+
+    color: #02243f;
+
+    text-align: center;
+
+    text-shadow:
+        0 2px 10px rgba(0, 0, 0, 0.6),
+        0 0 20px rgba(0, 150, 255, 0.3);
+    position: relative;
+    z-index: 1;
+}
+
+#fishingGameRoot {
+    width: 90vw;
+    height: 65vh;
+    margin: 40px auto;
+    position: relative;
+    z-index: 1;
+
+        border: 2px solid #00eaff;
+    box-shadow:
+        0 0 10px #00eaff,
+        0 0 20px rgba(0, 234, 255, 0.6),
+        inset 0 0 15px rgba(0, 234, 255, 0.2);
+    border-radius: 10px;
+    overflow: hidden;
+
+    background: url('../img/water00.png') center/cover no-repeat;
+    cursor: auto;
+}
+
+.back-link {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    color: white;
+    text-decoration: none;
+    font-weight: bold;
+    z-index: 20;
+    transition: transform 0.3s ease;
+}
+
+.back-link:hover {
+    transform: scale(1.1);
+}
+
+
+/* =========================
+   FISHES
+========================= */
+
+.fishing-game__fish {
+    position: absolute;
+    width: 70px;
+    height: 70px;
+
+
+    pointer-events: auto;
+    user-select: none;
+
+    overflow: hidden;
+}
+
+/* IMAGEN BASE */
+
+.fishing-game__fish-base,
+.fishing-game__fish-shine {
+    position: absolute;
+    inset: 0;
+
+    width: 100%;
+    height: 100%;
+
+    display: block;
+}
+
+.fishing-game__fish-base {
+    z-index: 1;
+}
+
+/* =========================
+    CAPA DE BRILLO 
+========================= */
+.fishing-game__fish-shine {
+    z-index: 2;
+    opacity: 0;
+    pointer-events: none;
+
+    filter: brightness(3.8) saturate(1.4);
+}
+
+#fishingGameRoot.playing .fishing-game__fish {
+    cursor: url('../img/cursor.png')32 32, auto;
+}
+
+#fishingGameRoot.playing .fishing-game__fish:hover .fishing-game__fish-shine {
+    animation: fish-shine-layer 0.18s linear;
+}
+
+/* =========================
+   ANIMACIÓN
+========================= */
+
+@keyframes fish-shine-layer {
+    0% {
+        opacity: 0;
+        transform: translateX(-12px);
+    }
+    25% {
+        opacity: 0.9;
+    }
+    100% {
+        opacity: 0;
+        transform: translateX(12px);
+    }
+}
+
+/* =========================
+   HUD
+========================= */
+
+.fishing-game__hud {
+    position: absolute;
+    top: 15px;
+    left: 15px;
+
+    display: flex;
+    gap: 25px;
+
+    padding: 15px 20px;
+
+    background: rgba(0, 0, 0, 0.7);
+    border: 2px solid #ffdd00;
+    border-radius: 12px;
+    box-shadow: 0 0 10px rgba(255, 221, 0, 0.2);
+
+    color: #ffdd00;
+    font-weight: bold;
+
+    backdrop-filter: blur(6px);
+    z-index: 10;
+}
+
+.fishing-game__hud div {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+#hudTimer {
+    font-size: 28px;
+    font-weight: bold;
+    color: #00e0ff;
+
+    padding: 5px 10px;
+    border: 1px solid #00e0ff;
+    border-radius: 6px;
+
+    background: rgba(0, 224, 225, 0.1);
+}
+
+#scoreBoard {
+    font-size: 18px;
+    color: #ffdd00;
+
+    padding: 5px 10px;
+    border: 1px solid #ffdd00;
+    border-radius: 6px;
+
+    background: rgba(255, 221, 0, 0.1);
+}
+
+#fishControls {
+    position: absolute;
+    bottom: 10%;
+
+    left: 50%;
+    transform: translateX(-50%);
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 200px;
+}
+
+.btn {
+    padding: 10px 20px;
+    font-size: 16px;
+    background-color: #ffdd00;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.btn:hover {
+    background-color: #e6c800;
+}
+
+/* =========================
+   ACTION BOX
+========================= */
+
+.action-box-overlay {
+    position: fixed;
+    inset: 0;
+    /* background: rgbs(0, 0, 0, 0.4); */
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.action-box {
+    background: rgba(0, 0, 0, 0.7);
+    border: 2px solid #ffdd00;
+    border-radius: 12px;
+    color: #ffdd00;
+    box-shadow: 0 0 10px rgba(255, 221, 0, 0.3);
+    backdrop-filter: blur(6px);
+    padding: 1.25rem 1.5rem;
+    min-width: 260px;
+}
+
+.action-box h3 {
+    margin-top: 0;
+    color: #00e0ff;
+}
+
+.action-box p {
+    color: #e6f7ff;
+}
+
+.action-box-actions {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+}
+
+.action-box-actions button {
+    background: #ffdd00;
+    color: #000;
+
+    border: none;
+    border-radius: 6px;
+
+    padding: 8px 14px;
+}
+
+.action-box-close {
+    position: absolute;
+    top: 0.8rem;
+    right: 0.8rem;
+
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    cursor: pointer;
+
+    color: #1f2937;
+}
+
+.action-box-actions button:hover {
+    background: #e6c800;
+}
+
+.action-box-close:hover {
+    opacity: 0.6;
+}
+
+/* =========================
+   SLIDE-UP
+========================= */
+
+.slide-up {
+    opacity: 0;
+    transform: translateY(3rem);
+    transition: opacity 0.4s ease, transform 0.4s ease;
+    pointer-events: none;
+}
+
+.is-active {
+    opacity: 1;
+    transform: translate(0, 0);
+    pointer-events: auto;
+}

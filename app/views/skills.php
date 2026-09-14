@@ -3,7 +3,7 @@
     <header class="cv-header">
         <div class="cv-photo-wrapper">
             <img
-                src="<?= BASE_URL ?>/assets/img/chad.jpg"
+                src="<?= BASE_URL ?>/assets/img/profile.jpg"
                 alt="Ángel Plata"
                 class="cv-photo">
         </div>

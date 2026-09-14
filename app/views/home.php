@@ -1,7 +1,7 @@
 <section class="hero">
     <div class="hero-content">
 
-        <img src="<?= BASE_URL ?>/assets/img/chad.jpg" alt="Profile photo" class="hero-avatar">
+        <img src="<?= BASE_URL ?>/assets/img/profile.jpg" alt="Profile photo" class="hero-avatar">
 
         <h1>Ángel Plata Benítez</h1>
         <p class="hero-subtitle">Desarrollador de Aplicaciones Web</p>
