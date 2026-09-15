@@ -1,0 +1,199 @@
+import { normalizeBallSpeed } from "./ballMovementSystem.js";
+import { HitEffect } from "./hitEffect.js";
+import {
+    calculateCpuHitEffect,
+    NORMAL_EFFECTS
+} from "./aiSystem.js";
+
+import { playPaddleHit, playWallCollision } from "../game/soundSystem.js";
+
+const SPIN_FACTOR = 0.55;
+const INPUT_SPIN_BONUS = 2.2;
+const CPU_BREAK_BONUS = 2.2;
+
+function intersects(ball, paddle) {
+    return (
+        ball.x < paddle.x + paddle.width &&
+        ball.x + ball.size > paddle.x &&
+        ball.y < paddle.y + paddle.height &&
+        ball.y + ball.size > paddle.y
+    )
+}
+
+export function handleWallCollision(ball, canvasWidth, canvasHeight) {
+    if (ball.x <= 0) {
+        ball.x = 0; ball.speedX *= -1;
+        playWallCollision();
+    }
+
+    if (ball.x + ball.size >= canvasWidth) {
+        ball.x = canvasWidth - ball.size;
+        ball.speedX *= -1;
+        playWallCollision();
+    }
+
+    /*
+    if (ball.y <= 0) { ball.y = 0; ball.speedY *= -1; }
+
+    if (ball.y + ball.size >= canvasHeight) {
+        ball.y = canvasHeight - ball.size;
+        ball.speedY *= -1;
+    }
+    */
+}
+
+export function handlePlayerPaddleCollision(ball, playerPaddle, inputState, ballSpeed) {
+    const isColliding = intersects(ball, playerPaddle);
+
+    if (!isColliding || ball.speedY <= 0) { return false; }
+
+    const collisionSide = getPaddleCollisionSide(ball, playerPaddle);
+
+    const overlapsX =
+        ball.x < playerPaddle.x + playerPaddle.width &&
+        ball.x + ball.size > playerPaddle.x;
+
+    const wasAbove = ball.prevY + ball.size <= playerPaddle.y;
+
+    const crossEdgeTop = ball.y + ball.size >= playerPaddle.y;
+
+    if (overlapsX &&
+        wasAbove &&
+        crossEdgeTop &&
+        ball.speedY > 0
+    ) {
+        ball.y = playerPaddle.y - ball.size;
+        ball.speedY *= -1;
+
+        playPaddleHit();
+
+        applyPlayerSpin(ball, playerPaddle, inputState, ballSpeed);
+
+        return true;
+    }
+
+    if (collisionSide === "LEFT") {
+        ball.x = playerPaddle.x - ball.size;
+        ball.speedX = -Math.abs(ball.speedX);
+
+        playPaddleHit();
+        return true;
+    }
+    if (collisionSide === "RIGHT") {
+        ball.x = playerPaddle.x + playerPaddle.width;
+        ball.speedX = Math.abs(ball.speedX);
+
+        playPaddleHit();
+        return true;
+    }
+
+    return false;
+}
+
+function applyPlayerSpin(ball, playerPaddle, inputState, ballSpeed) {
+    const paddleDeltaX = playerPaddle.x - playerPaddle.prevX;
+    const movementSpin = paddleDeltaX * SPIN_FACTOR;
+
+    if (inputState.right) { ball.speedX += INPUT_SPIN_BONUS; }
+    else if (inputState.left) { ball.speedX -= INPUT_SPIN_BONUS; }
+    else if (inputState.down) { ball.speedX *= -1; }
+    else if (inputState.up) { ball.speedX = 0; }
+    else { ball.speedX += movementSpin; }
+
+    normalizeBallSpeed(ball, ballSpeed);
+}
+
+export function handleCpuPaddleCollision(
+    ball,
+    cpuPaddle,
+    playerPaddle,
+    canvasWidth,
+    ballSpeed,
+    hitEffectRanks) {
+
+    const isColliding = intersects(ball, cpuPaddle);
+
+    if (!isColliding || ball.speedY >= 0) { return; }
+
+    const overlapsX =
+        ball.x < cpuPaddle.x + cpuPaddle.width &&
+        ball.x + ball.size > cpuPaddle.x;
+
+    const wasBelow =
+        ball.prevY >= cpuPaddle.y + cpuPaddle.height;
+
+    const crossedBottomEdge =
+        ball.y <= cpuPaddle.y + cpuPaddle.height;
+
+    // Bottom face collision has priority over lateral collisions
+    if (overlapsX && wasBelow && crossedBottomEdge) {
+        ball.y = cpuPaddle.y + cpuPaddle.height;
+        ball.speedY *= -1;
+
+        playPaddleHit();
+
+        const hitEffectRank = hitEffectRanks[Math.floor(Math.random() * hitEffectRanks.length)];
+
+        const effect = calculateCpuHitEffect(ball, playerPaddle, canvasWidth, NORMAL_EFFECTS, hitEffectRank);
+        applyCpuEffect(ball, cpuPaddle, effect, ballSpeed);
+        return;
+    }
+
+    const collisionSide = getPaddleCollisionSide(ball, cpuPaddle);
+    if (collisionSide === "LEFT") {
+        ball.x = cpuPaddle.x - ball.size;
+        ball.speedX = -Math.abs(ball.speedX);
+        playPaddleHit();
+        return;
+    }
+
+    if (collisionSide === "RIGHT") {
+        ball.x = cpuPaddle.x + cpuPaddle.width;
+        ball.speedX = Math.abs(ball.speedX)
+        playPaddleHit();
+        return;
+    }
+}
+
+function applyCpuEffect(ball, cpuPaddle, effect, ballSpeed) {
+    const paddleDeltaX = cpuPaddle.x - cpuPaddle.prevX;
+    const movementSpin = paddleDeltaX * SPIN_FACTOR;
+
+
+    // Applies the natural spin produced by the CPU paddle movement.
+    ball.speedX += movementSpin;
+
+    switch (effect) {
+        case HitEffect.NONE:
+            break;
+        case HitEffect.UP:
+            ball.speedX = 0;
+            break;
+        case HitEffect.DOWN:
+            ball.speedX *= -1;
+            break;
+        case HitEffect.BREAK_LEFT:
+            ball.speedX -= CPU_BREAK_BONUS;
+            break;
+        case HitEffect.BREAK_RIGHT:
+            ball.speedX += CPU_BREAK_BONUS;
+            break;
+    }
+
+    normalizeBallSpeed(ball, ballSpeed);
+}
+
+function getPaddleCollisionSide(ball, paddle) {
+    const crossedLeft =
+        ball.prevX + ball.size <= paddle.prevX &&
+        ball.x + ball.size >= paddle.x;
+
+    const crossedRight =
+        ball.prevX >= paddle.prevX + paddle.width &&
+        ball.x <= paddle.x + paddle.width;
+
+    if (crossedLeft) { return "LEFT"; }
+    if (crossedRight) { return "RIGHT"; }
+
+    return null;
+}

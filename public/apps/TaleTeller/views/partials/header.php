@@ -45,7 +45,7 @@ $viewkey = $_GET['v'] ?? 'home';
           
             <?php endif; ?>
             
-            <li><a href="../portfolio/public/index.php?v=home">Return to portfolio</a></li>
+            <li><a href="/index.php?v=home">Return to portfolio</a></li>
 
         </ul>
     </nav>

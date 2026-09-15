@@ -10,11 +10,7 @@ $viewKey = $_GET['v'] ?? 'home';
 $views = [
     'home'      => BASE_PATH . '/app/views/home.php',
     'skills'    => BASE_PATH . '/app/views/skills.php',
-    'gallery'   => BASE_PATH . '/app/views/gallery.php',
-    'writsList' => BASE_PATH . '/app/views/writsList.php',
-    'writing'   => BASE_PATH . '/app/views/writing.php',
     'projects'  => BASE_PATH . '/app/views/projects.php',
-    'contact'   => BASE_PATH . '/app/views/contact.php',
     'minigames' => BASE_PATH . '/app/views/minigames.php'
 ];
 

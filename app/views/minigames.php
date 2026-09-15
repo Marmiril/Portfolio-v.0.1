@@ -16,6 +16,11 @@
                 'img' => 'evolupong.jpg',
                 'href' => BASE_URL . '/assets/download/Evolupong.zip',
                 'download' => true
+            ],
+            [
+                'img' => 'cheapong.jpg',
+                'href' => BASE_URL . '/apps/cheapong/index.html',
+                'download' => false
             ]
         ];
         foreach ($minigames as $game): ?>

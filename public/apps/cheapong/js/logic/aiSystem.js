@@ -1,0 +1,436 @@
+import { HitEffect } from "./hitEffect.js";
+import { normalizeBallSpeed } from "./ballMovementSystem.js"
+
+// Defines the moments when the CPU recalculates its target.
+// Higher values happen earlier while the ball is still far from the CPU.
+/* const PHASES = [
+    //0.90,
+    //0.75,
+    //0.50,
+    0.25,
+    0.10
+];
+*/
+
+// Effects for Ai response
+export const NORMAL_EFFECTS = [
+    HitEffect.NONE,
+    HitEffect.UP,
+    HitEffect.DOWN,
+    HitEffect.BREAK_LEFT,
+    HitEffect.BREAK_RIGHT
+];
+
+// Effects the CPU can compare when preparing a serve
+export const CPU_SERVE_EFFECTS = [
+    // HitEffect.NONE,
+    HitEffect.BREAK_LEFT,
+    HitEffect.BREAK_RIGHT
+];
+
+// Horizontal speed applied by the CPU to break a vertical ball trajectory.
+const CPU_BREAK_BONUS = 2.2;
+
+// Stores the last phase already processed.
+// Prevents the CPU from recalculating the target every frame.
+let currentPhase = -1;
+
+// Stores the las tracking phase already processed
+let currentTrackingPhase = -1;
+
+// Stores the curretn X postiion the CPU wants to reach
+let targetX = 0;
+
+let cpuReactionStartTime = null;
+export function resetCpuReactionTime() {
+    cpuReactionStartTime = null;
+    currentPhase = -1;
+    currentTrackingPhase = -1;
+}
+
+// Controle how much the CPU can miss its prediction.
+// Higher value means a less accurate CPU.
+// const MAX_ERROR_FACTOR = 0.40;
+
+// Controls a small random side variation added to the CPU target.
+// This makes the CPU movement feel less robotic.
+// const MAX_DRIFT = 0.12;
+
+export function calculateCpuTargetX(cpuPaddle, ball, canvasWidth, canvasHeight, difficultySettings) {
+
+    const { phases, trackingPhases, maxErrorFactor, maxDrift, reactionTime, missPhaseChance, returnMode } = difficultySettings;
+
+    // If the ball is moving down, it is going away from the CPU.
+    // The CPU resets its phase and returns to the center.
+    if (ball.speedY >= 0) {
+        cpuReactionStartTime = null;
+        currentPhase = -1;
+
+        if (returnMode === "CENTER") {
+            currentTrackingPhase = -1;
+            targetX = canvasWidth / 2 - cpuPaddle.width / 2;
+            return targetX;
+        }
+
+        if (returnMode === "TRACK") {
+            if (currentTrackingPhase === -1) { targetX = cpuPaddle.x; }
+
+            for (let i = 0; i < trackingPhases.length; i++) {
+                const trackingPhaseY = canvasHeight * trackingPhases[i];
+
+                if (ball.y >= trackingPhaseY && currentTrackingPhase < i) {
+                    currentTrackingPhase = i;
+                    targetX = ball.x + ball.size / 2 - cpuPaddle.width / 2;
+                    break;
+                }
+            }
+
+            return targetX;
+        }
+
+        // STAY MODE   
+        currentTrackingPhase = -1;
+        targetX = cpuPaddle.x;
+        return targetX;
+    }
+
+    if (cpuReactionStartTime === null) {
+        cpuReactionStartTime = performance.now();
+        targetX = cpuPaddle.x;
+        return targetX;
+    }
+
+    const reactionElapsedTime = performance.now() - cpuReactionStartTime;
+
+    /* 
+    if (reactionElapsedTime < reactionTime) {
+
+        // Phases crossing during the reaction time are considered missed
+        for (let i = 0; i < phases.length; i++) {
+            const phaseY = canvasHeight * phases[i];
+
+            if (ball.y <= phaseY) {
+                currentPhase = i;
+            }
+        }
+        return targetX;
+    }
+        */
+    const isReacting = reactionElapsedTime < reactionTime;
+
+    currentTrackingPhase = -1;
+
+    // 
+    if (currentPhase === -1) { targetX = cpuPaddle.x; }
+
+    // Checks each phase to know if the CPU should update its target now.
+    for (let i = 0; i < phases.length; i++) {
+        const phaseY = canvasHeight * phases[i];
+
+        // The CPU recalculates only when the ball reaches a new phase.
+        if (ball.y <= phaseY && currentPhase < i) {
+            currentPhase = i;
+
+            /// Phases crossed during reaction time are considered missed
+            if (isReacting) {
+                continue;
+            }
+
+            // The cpu may miss this decision phase depending on difficulty
+            if (Math.random() < missPhaseChance) { break; }
+
+            // Calculates the ideal target without any human eror.
+            const cleanTargetX = predictBallX(ball, cpuPaddle, canvasWidth)
+                + ball.size / 2
+                - cpuPaddle.width / 2;
+
+            // Adds a controlled aiming mistake depending on the current phase.
+            const aimError = calculateAimError(cpuPaddle, currentPhase, phases, maxErrorFactor);
+
+            // Adds a small random variation to avoid perfect movement.
+            const drift = calculateDrift(cpuPaddle, maxDrift);
+
+            targetX = cleanTargetX + aimError + drift;
+            break;
+        }
+    }
+
+    return targetX;
+}
+
+function predictBallX(ball, cpuPaddle, canvasWidth) {
+
+    const distanceY = ball.y - (cpuPaddle.y + cpuPaddle.height);
+
+    // Estimates how many frames the ball needs to reach the CPU paddle.
+    const framesToReach = distanceY / Math.abs(ball.speedY);
+
+    // Predicts the future X center of the ball without considering walls yet.
+    const rawBallCenterX = ball.x + ball.size / 2 + ball.speedX * framesToReach;
+
+    // Adjusts the prediction if the ball would bounce against side walls.
+    const reflectedBallCenterX = reflectX(rawBallCenterX, ball.size, canvasWidth);
+
+    // Returns the top-left X position of the ball.
+    return reflectedBallCenterX - ball.size / 2;
+}
+
+function reflectX(rawBallCenterX, ballSize, canvasWidth) {
+
+    // Minimum and maximun valid center positions for the ball.
+    const minBallCenterX = ballSize / 2;
+    const maxBallCenterX = canvasWidth - ballSize / 2;
+
+    // Horizontal space where the ball center can move.
+    const playableWidth = maxBallCenterX - minBallCenterX;
+
+    // Simulates repeated side-wall bounces using a mirrored range.
+    let reflectedX = (rawBallCenterX - minBallCenterX) % (playableWidth * 2);
+
+    // Fixes negative modulo results.
+    if (reflectedX < 0) { reflectedX += playableWidth * 2; }
+
+    // Mirrors the position when it goes betond the playable width.
+    if (reflectedX > playableWidth) { reflectedX = playableWidth * 2 - reflectedX; }
+
+    // Converts the reflected local position back to canvas coordinates.
+    return reflectedX + minBallCenterX;
+}
+
+function calculateAimError(cpuPaddle, phaseIndex, phases, maxErrorFactor) {
+    // Early phases have more error, later phases have less error.
+    const phaseErrorFactor = phases[phaseIndex];
+
+    // Maximum possible error based on paddle width and phase.
+    const maxError = cpuPaddle.width * maxErrorFactor * phaseErrorFactor;
+
+    // Returns a random valuie between -maxError and +maxError.
+    return Math.random() * maxError * 2 - maxError;
+}
+
+function calculateDrift(cpuPaddle, maxDrift) {
+    // Returns a small random side offset based on paddle width.
+    return (Math.random() * 2 - 1) * cpuPaddle.width * maxDrift;
+}
+
+export function getCandidateSpeedX(ball, effect) {
+    switch (effect) {
+        case HitEffect.UP:
+            return 0;
+        case HitEffect.DOWN:
+            return -ball.speedX;
+        case HitEffect.BREAK_LEFT:
+            return ball.speedX - CPU_BREAK_BONUS;
+        case HitEffect.BREAK_RIGHT:
+            return ball.speedX + CPU_BREAK_BONUS;
+        default:
+            return ball.speedX;
+    }
+}
+
+function getCpuServeTargetPositions(cpuPaddle, canvasWidth) {
+    const maxPaddleX = canvasWidth - cpuPaddle.width;
+
+    return [0, maxPaddleX / 4, maxPaddleX / 3, maxPaddleX / 2, maxPaddleX * 2 / 3, maxPaddleX * 3 / 4, maxPaddleX]
+}
+
+export function calculateCpuHitEffect(
+    ball,
+    playerPaddle,
+    canvasWidth,
+    availableEffects,
+    effectRank = 0
+) {
+
+    const playerCenterX = playerPaddle.x + playerPaddle.width / 2;
+    const ballCenterX = ball.x + ball.size / 2;
+    const ballCenterY = ball.y + ball.size / 2;
+
+    const playerRight = playerPaddle.x + playerPaddle.width;
+    const ballRight = ball.x + ball.size;
+
+    // With speed = 0, the ball would follow this same horizontal track.
+    const isInsidePlayerTrack =
+        ballRight > playerPaddle.x &&
+        ball.x < playerRight;
+
+    const isNormalHit = availableEffects === NORMAL_EFFECTS;
+
+
+    if (isNormalHit && ball.speedX === 0 && isInsidePlayerTrack) {
+        if (ballCenterX < canvasWidth / 2) { return HitEffect.BREAK_RIGHT; }
+        if (ballCenterX > canvasWidth / 2) { return HitEffect.BREAK_LEFT; }
+
+        return Math.random() < 0.5
+            ? HitEffect.BREAK_LEFT
+            : HitEffect.BREAK_RIGHT;
+    }
+
+    const candidateEffetcs = [];
+
+    for (const effect of availableEffects) {
+        // Simulates the horizontal speed produced by this effect.
+        const candidateSpeedX = getCandidateSpeedX(ball, effect);
+
+        // After the CPU hit, the ball moves down towards the player.
+        const candidateSpeedY = Math.abs(ball.speedY);
+
+        if (candidateSpeedY === 0) { continue; }
+
+        // Calculates how long the ball needs to reach the player paddle.
+        const timeToPlayer = (playerPaddle.y - ballCenterY) / candidateSpeedY;
+
+        if (timeToPlayer <= 0) { continue; }
+
+        // Predicts the horizontal landing position
+        const rawPredictedCenterX = ballCenterX + candidateSpeedX * timeToPlayer;
+
+        const predicetdCenterX = reflectX(
+            rawPredictedCenterX,
+            ball.size,
+            canvasWidth
+        );
+
+        // Measures how far the player would need to move.
+        const distanceToTravel = Math.abs(predicetdCenterX - playerCenterX);
+        const reactionTime = distanceToTravel / playerPaddle.speed;
+
+        candidateEffetcs.push({
+            effect,
+            reactionTime
+        });
+    }
+
+    candidateEffetcs.sort(
+        (firstEffect, secondEffect) =>
+            secondEffect.reactionTime - firstEffect.reactionTime
+    );
+
+    const selectedEffect =
+        candidateEffetcs[
+        Math.min(effectRank, candidateEffetcs.length - 1)
+        ];
+    //return bestEffet;
+    return selectedEffect.effect;
+}
+
+function createCpuServeCandidateBall(
+    ball,
+    cpuPaddle,
+    targetX,
+    ballSpeed
+) {
+    return {
+        x: targetX + (cpuPaddle.width - ball.size) / 2,
+        y: cpuPaddle.y + cpuPaddle.height,
+        size: ball.size,
+        speedX: 0,
+        speedY: ballSpeed
+    };
+}
+
+export function calculateCpuServePlan(
+    ball,
+    cpuPaddle,
+    playerPaddle,
+    canvasWidth,
+    ballSpeed,
+    cpuServePlanRank
+) {
+    const targetPositions = getCpuServeTargetPositions(cpuPaddle, canvasWidth);
+    const playerCenterX = playerPaddle.x + playerPaddle.width / 2;
+
+    /*
+        let bestPlan = {
+            targetX: targetPositions[1],
+            effect: HitEffect.NONE
+        }
+    
+        let longestReactionTime = -1;
+    
+    */
+    const candidatePlans = [];
+
+    for (const targetX of targetPositions) {
+        const candidateBall = createCpuServeCandidateBall(
+            ball,
+            cpuPaddle,
+            targetX,
+            ballSpeed
+        );
+
+        const effect = calculateCpuHitEffect(
+            candidateBall,
+            playerPaddle,
+            canvasWidth,
+            CPU_SERVE_EFFECTS
+        );
+
+
+        const candidateSpeedX = getCandidateSpeedX(
+            candidateBall,
+            effect
+        );
+
+        const candidateSpeedY = Math.sqrt(
+            Math.max(
+                0,
+                ballSpeed ** 2 - candidateSpeedX ** 2
+            )
+        );
+
+        if (candidateSpeedY === 0) { continue; }
+
+
+        candidateBall.speedX = getCandidateSpeedX(candidateBall, effect);
+
+        normalizeBallSpeed(candidateBall, ballSpeed);
+
+        const ballCenterX = candidateBall.x + candidateBall.size / 2;
+
+        const ballCenterY = candidateBall.y + candidateBall.size / 2;
+
+        const timeToPlayer = (playerPaddle.y - ballCenterY) / candidateSpeedY;
+
+        const rawPredictedCenterX = ballCenterX + candidateSpeedX * timeToPlayer;
+
+        const predictedCenterX = reflectX(
+            rawPredictedCenterX,
+            ball.size,
+            canvasWidth
+        );
+
+        const distanceToTravel = Math.abs(predictedCenterX - playerCenterX);
+
+        const reactionTime = distanceToTravel / playerPaddle.speed;
+
+        candidatePlans.push({
+            targetX,
+            effect,
+            reactionTime
+        });
+        /*/
+        if (reactionTime > longestReactionTime) {
+            longestReactionTime = reactionTime;
+
+            bestPlan = {
+                targetX,
+                effect
+            };
+        }
+        */
+    }
+
+    //return bestPlan;
+    candidatePlans.sort(
+        (firstPlan, secondPlan) =>
+            secondPlan.reactionTime - firstPlan.reactionTime
+    );
+
+    const selectedPlan = candidatePlans[Math.min(cpuServePlanRank, candidatePlans.length - 1)];
+
+    return {
+        targetX: selectedPlan.targetX,
+        effect: selectedPlan.effect
+    };
+}
