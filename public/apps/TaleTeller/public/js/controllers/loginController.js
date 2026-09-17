@@ -12,7 +12,7 @@ export function initLoginController() {
         const x = Math.floor(Math.random() * 1000);
         const y = Math.floor(Math.random() * 1000);
 
-        form.style.backgroundPosition = `${x} ${y}`;
+        form.style.backgroundPosition = `${x}px ${y}px`;
     }
 
     const routes = {
@@ -53,7 +53,7 @@ export function initLoginController() {
 
             console.log('Logged user:', data.user);
 
-            window.location.href = routes[returnTo] ?? 'index.php?V=home';
+            window.location.href = routes[returnTo] ?? 'index.php?v=home';
         } catch (err) {
             console.error('Network error:', err);
             if (errorBox) {
@@ -71,6 +71,6 @@ export function initLoginController() {
             errorBox.textContent = '';
         }
 
-        window.location.href = routes[returnTo] ?? 'index.phpv=home';
+        window.location.href = routes[returnTo] ?? 'index.php?v=home';
     });
 }

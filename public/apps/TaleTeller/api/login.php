@@ -4,7 +4,7 @@ require_once __DIR__ . '/../config/config.php';
 
 header ("Content-Type: application/json");
 
-require_once __DIR__ . '/app/Services';
+require_once BASE_PATH . '/app/Services/AuthService.php';
 
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     http_response_code(405);
@@ -16,7 +16,7 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
 }
 
 // MIN VALIDATION
-$required = ['email', ['password']];
+$required = ['email', 'password'];
 foreach($required as $field) {
     if (!isset($_POST[$field])) {
         http_response_code(400);
