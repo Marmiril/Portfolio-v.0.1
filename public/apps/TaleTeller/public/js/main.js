@@ -107,17 +107,26 @@ if (logoutBtn) {
                     label: 'Yes',
                     action: async () => {
                         try {
-                            await fetch('api/logout.php', {
+                            const response = await fetch('api/logout.php', {
                                 method: 'POST'
                             });
+
+                            const data = await response.json();
+
+                            if (!response.ok || !data.success) {
+                                throw new Error(data.error || 'Logout failed');
+                            }
+
+                            const fields = ['title', 'theme', 'steps', 'keyword', 'fragment'];
+                            fields.forEach(key => sessionStorage.removeItem(key));
+
+                            window.location.href = 'index.php';
+
                         } catch (e) {
                             console.error('Logout error', e);
                         }
 
-                        const fields = ['title', 'theme', 'steps', 'keyword', 'fragment'];
-                        fields.forEach(key => sessionStorage.removeItem(key));
 
-                        window.location.href = 'index.php';
                     }
                 }, {
                     label: 'No',

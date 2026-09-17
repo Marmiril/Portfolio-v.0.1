@@ -2,9 +2,11 @@
 
 require_once __DIR__ . '/../config/config.php';
 
+session_start();
+
 header ("Content-Type: application/json");
 
-require_once __DIR__ . '/app/Services/AuthService.php';
+require_once BASE_PATH . '/app/Services/AuthService.php';
 
 if($_SERVER['REQUEST_METHOD'] !== 'POST') {
     http_response_code(405);
@@ -12,6 +14,8 @@ if($_SERVER['REQUEST_METHOD'] !== 'POST') {
         'success' => false,
         'error' => 'Method not allowed'
     ]);
+
+    exit;
 }
 
 try{
