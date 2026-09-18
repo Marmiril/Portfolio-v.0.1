@@ -66,7 +66,7 @@ function renderList(tales, container) {
         item.classList.add(getRandomSlide());
 
         item.innerHTML = `
-        <a hrer="${link}">${tale.title}</a>
+        <a href="${link}">${tale.title}</a>
         <br>
         <span> ${tale.theme} </span>
         <span> - Steps: ${labelSteps} </span>

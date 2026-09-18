@@ -14,7 +14,7 @@ $taleId = $_GET['tale'] ?? null;
         <button id="btnContinue" class="btn" style="display:block">Continue</button>
 
         <form id="taleForm" data-tale-id="<?= $taleId ?>">
-            <?php require_once 'partials/fragemntForm.php'; ?>
+            <?php require_once 'partials/fragmentForm.php'; ?>
         </form>
     </div>
 </section>

@@ -63,7 +63,7 @@ class FragmentReader
                 t.title,
                 t.keyword
                 FROM collaborations c
-                JOIN user u ON u.id = c.author,
+                JOIN users u ON u.id = c.author
                 JOIN tales t ON t.id = c.tale_id
                 WHERE c.tale_id = :tale_id
                 ORDER BY c.step_number DESC

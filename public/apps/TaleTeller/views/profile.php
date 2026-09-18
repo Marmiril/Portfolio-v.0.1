@@ -9,6 +9,6 @@
     </aside>
 
     <aside class="column column-right">
-        <?php require_once __DIR__ . '/partials/column-right'; ?>
+        <?php require_once __DIR__ . '/partials/column-right.php'; ?>
     </aside>
 </section>
