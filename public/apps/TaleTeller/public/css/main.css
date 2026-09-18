@@ -110,6 +110,9 @@ body {
     border: none;
     cursor: pointer;
 
+    font-family: inherit;
+    padding: 0;
+
     display: inline-block;  
 
     transition: transform 0.2s ease;
@@ -447,7 +450,7 @@ ul.tales-table a:hover {
     max-width: 50rem;    
     backdrop-filter: blur(10px);
     text-align: justify;
-    font-size: 1.2rem;
+    font-size: 1.5rem;
     font-family: 'IM Fell English', serif;
 }
 
@@ -504,6 +507,8 @@ ul.tales-table a:hover {
     transition: transform 0.2s ease, box-shadow 0.2s ease;
     text-align: justify;
     font-family: 'IM Fell English', serif;
+
+    font-size: 1.8rem;
 }
 
 .tale-chapter:hover {
@@ -521,7 +526,7 @@ ul.tales-table a:hover {
 
 .tale-chapter footer {
     margin-top: 1rem;
-    font-size: 1.2rem;
+    font-size: 1.4rem;
     color: #555;
 }
 
@@ -713,11 +718,11 @@ ul.tales-table a:hover {
 }
 
 .action-box {
-    background: #fff;
+    background-image: url('../img/back_ground_04.png');
     padding: 2rem;
     border-radius: 8px;
     border: 1px solid #1f2937;
-
+    font-size: 1.3rem;
     width: 90%;
     max-width: 28rem;
 
@@ -746,6 +751,8 @@ ul.tales-table a:hover {
 .action-box-actions button {
     padding: 0.5rem 1rem;
     cursor: pointer;
+    font-size: 2rem;
+    border-radius: 4px;
 }
 
 .action-box-close {
