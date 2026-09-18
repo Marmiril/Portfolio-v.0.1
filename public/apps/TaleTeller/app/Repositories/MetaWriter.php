@@ -38,7 +38,7 @@ class MetaWriter {
     public function markAsFinished(int $tale_id): void
     {
         $sql = 'UPDATE tales SET current_step = steps,
-                finished = CURRENT_TIMESTAMP
+                finishedAt = CURRENT_TIMESTAMP
                 where id = :id';
         $stmt = $this->db->prepare($sql);
         $stmt->execute([':id' => $tale_id]);
