@@ -5,7 +5,7 @@ require_once __DIR__ . '/../config/config.php';
 header("Content-Type: application/json");
 
 require_once BASE_PATH . '/app/Repositories/MetaReader.php';
-require_once BASE_PATH . '/app/Repositories/FragementReader.php';
+require_once BASE_PATH . '/app/Repositories/FragmentReader.php';
 
 if ($_SERVER['REQUEST_METHOD'] !== 'GET') {
     http_response_code(405);
@@ -52,7 +52,7 @@ if (!$metaReader -> isFinished($tale_id)) {
 
 $fragment = $fragmentReader -> getByTaleId($tale_id);
 if (isset($meta['author'])) {
-    $stmt = Database::getConnection()->prepare('SELECT username FROM users WHERE id == :id');
+    $stmt = Database::getConnection()->prepare('SELECT username FROM users WHERE id = :id');
     $stmt->execute([':id' => $meta['author']]);
     $authorname = $stmt->fetchColumn();
 }

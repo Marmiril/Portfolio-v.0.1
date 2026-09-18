@@ -16,7 +16,7 @@ export async function initConsultTaleController() {
         const res = await fetch(`api/getTale.php?tale_id=${taleId}`);
         const data = await res.json();
 
-        if (!data || !data.tale || !Array.isArray(data.fragmens)) {
+        if (!data || !data.tale || !Array.isArray(data.fragments)) {
             taleContainer.textContent = 'Tale loading failed X(!';
             return;
         }
