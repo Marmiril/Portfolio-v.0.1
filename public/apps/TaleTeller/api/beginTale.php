@@ -49,7 +49,7 @@ try {
 
     $db->commit();
     echo json_encode([
-        'succes' => true,
+        'success' => true,
         'tale_id' => $taleId
     ]);
 

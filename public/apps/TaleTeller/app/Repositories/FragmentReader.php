@@ -47,7 +47,7 @@ class FragmentReader
     {
         $sql = "SELECT DISTINCT tale_id
                 FROM collaborations
-                WHERE autor = :userId";
+                WHERE author = :userId";
         $stmt = $this->db->prepare($sql);
         $stmt->execute([':userId' => $userId]);
         return $stmt->fetchAll(PDO::FETCH_COLUMN);
