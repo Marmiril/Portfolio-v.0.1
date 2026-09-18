@@ -54,7 +54,7 @@ function renderMeta(container, tale) {
 function renderFragments(container, fragments) {
     container.innerHTML = '';
 
-    fragments.forEach((fragments, index) => {
+    fragments.forEach((fragment, index) => {
         const block = document.createElement('article');
         block.className = 'tale-chapter';
 
