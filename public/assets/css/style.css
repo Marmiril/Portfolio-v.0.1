@@ -318,13 +318,13 @@ footer {
     background-color: #1e1e1e;
     color: white;
     text-align: center;
-    padding: 10px;
+    padding: 0.625rem;
 }
 
 /* GALLERY */
 .gallery {
     width: 100%;
-    max-width: 1100px;
+    max-width: 69rem;
     margin: 0 auto;
 }
 
@@ -333,14 +333,14 @@ footer {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 30px;
+    margin-bottom: 1.9rem;
 }
 
 .btn-back {
     text-decoration: none;
     background-color: #1e1e1e;
     color: white;
-    padding: 8px 16px;
+    padding: 0.5rem 1rem;
     border-radius: 30px;
 }
 
@@ -348,7 +348,7 @@ footer {
 .gallery-grid {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
-    gap: 20px;
+    gap: 1.25rem;
 }
 
 .gallery-grid h3 {
@@ -359,7 +359,7 @@ footer {
 /* GALLERY-ITEM */
 .gallery-item img {
     width: 100%;
-    height: 220px;
+    height: 14rem;
     object-fit: cover;
     border-radius: 8px;
     transition: transform 0.2s;
@@ -429,21 +429,21 @@ footer {
 .writing {
     position: relative;
     z-index: 1;
-    max-width: 800px;
+    max-width: 50rem;
     margin: 0 auto;
-    padding: 40px;
+    padding: 2.5rem;
     color: white;
     text-align: center;
     font-family: 'Cinzel', serif;
 }
 
 .writing h1 {
-    margin-bottom: 20px;
+    margin-bottom: 1.25rem;
     color: white;
 }
 
 .writing-content {
-    margin-bottom: 15px;
+    margin-bottom: 1rem;
     line-height: 1.8;
 }
 
