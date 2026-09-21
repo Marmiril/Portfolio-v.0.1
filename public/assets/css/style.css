@@ -613,3 +613,40 @@ footer {
     margin-bottom: 0;
 }
 
+@media (max-width: 700px) {
+    .cv-page {
+        padding: 1.5rem;
+    }
+
+    .cv-header {
+        flex-direction: column;
+        text-align: center;
+        gap: 1.25rem;
+        padding: 1.5rem 1rem;
+    }
+
+    .cv-photo {
+        width: 10rem;
+        height: 10rem;
+    }
+
+    .cv-links {
+        width: 100%;
+        flex-direction: row;
+        justify-content: center;
+        flex-wrap: wrap;
+    }
+
+    .cv-layout {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+
+    .cv-block {
+        width: 100%;
+    }
+
+    .cv-contact {
+        overflow-wrap: anywhere;
+    }
+}
