@@ -25,9 +25,9 @@ body {
 }
 
 .header-container {
-    max-width: 1100px;
+    max-width: 69rem;
     margin: 0 auto;
-    padding: 15px 20px;
+    padding: 1rem 1.5rem;
 
     display: flex;
     justify-content: space-between;
@@ -39,7 +39,7 @@ body {
     color: white;
     text-decoration: none;
     font-weight: bold;
-    font-size: 18px;
+    font-size: 1.125rem;
 }
 
 /* minigames */
@@ -151,14 +151,14 @@ body {
 /* NAV */
 nav {
     display: flex;
-    gap: 20px;
+    gap: 1.25rem;
 }
 
 nav a {
     color: white;
     text-decoration: none;
     font-weight: 500;
-
+    font-size: 1rem;
     transition: transform 0.2s ease;
 }
 
