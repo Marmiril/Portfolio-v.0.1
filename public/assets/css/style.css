@@ -200,6 +200,14 @@ nav a:hover {
     .hero-subtitle {
         font-size: 1rem;
     }
+
+    .hero-actions {
+        flex-wrap: wrap;
+    }
+
+    .hero {
+        padding: 1.5rem 1rem;
+    }
 }
 
 /* MAIN */
