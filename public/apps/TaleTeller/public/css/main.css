@@ -783,3 +783,33 @@ ul.tales-table a:hover {
     margin: 0;
 }
 
+@media (max-width: 700px) {
+    .main-header {
+        width: 95%;
+        padding: 0.5rem 1rem;
+        box-sizing: border-box;
+    }
+
+    .app-title {
+        font-size: 2.8rem;
+        text-align: center;
+        letter-spacing: 3px;
+    }
+
+    .app-subtitle {
+        display: block;
+        margin-top: 0.3rem;
+        font-size: 0.9rem;
+        letter-spacing: 2px;
+    }
+
+    .main-nav ul {
+        flex-wrap: wrap;
+        gap: 1rem 1.5rem;
+    }
+
+    .main-nav a,
+    .main-nav-link {
+        font-size: 1.2rem;
+    }
+}
