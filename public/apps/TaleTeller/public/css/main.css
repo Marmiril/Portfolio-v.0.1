@@ -812,4 +812,33 @@ ul.tales-table a:hover {
     .main-nav-link {
         font-size: 1.2rem;
     }
+
+    .columns {
+        flex-direction: column;
+        width: 95%;
+        gap: 1rem;
+    }
+
+    .column {
+        width: 100%;
+        min-width: 0;
+        max-width: none;
+        padding: 1rem;
+    }
+
+    .column-main {
+        max-height: none;
+    }
+
+    .columns > .column-main {
+        order: 1;
+    }
+
+    .columns > .column-side:first-child {
+        order: 2;
+    }
+
+    .columns > .column-side:last-child {
+        order: 3;
+    }
 }
