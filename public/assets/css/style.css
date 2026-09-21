@@ -175,10 +175,31 @@ nav a:hover {
         text-align: center;
     }
 
+    .logo a {
+        font-size: 1.4rem;
+    }
+
     nav {
         justify-content: center;
         flex-wrap: wrap;
     }    
+
+    nav a {
+        font-size: 1.2rem;
+    }
+
+    .hero-avatar {
+        width: 16rem;
+        height: 16rem;
+    }
+
+    .hero h1 {
+        font-size: 2rem;
+    }
+
+    .hero-subtitle {
+        font-size: 1rem;
+    }
 }
 
 /* MAIN */
