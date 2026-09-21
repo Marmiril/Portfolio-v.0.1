@@ -240,11 +240,11 @@ main {
 
 /* AVATAR */
 .hero-avatar {
-    width: 320px;
-    height: 320px;
+    width: 20rem;
+    height: 20rem;
     border-radius: 50%;
     object-fit: cover;
-    margin-bottom: 20px;
+    margin-bottom: 1.25rem;
     border: 3px solid rgba(255,255,255,0.3);
 
     transition: transform 0.3s ease;
@@ -256,14 +256,14 @@ main {
 
 /* TITLE */
 .hero h1 {
-    font-size: 36px;
-    margin-bottom: 10px;
+    font-size: 2.25rem;
+    margin-bottom: 0.625rem;
 }
 
 /* SUBTITLE */
 .hero-subtitle {
-    font-size: 18px;
-    margin-bottom: 30px;
+    font-size: 1.3rem;
+    margin-bottom: 1.9rem;
     color: rgba(255,255,255,0.8);
 }
 
@@ -271,11 +271,11 @@ main {
 .hero-actions {
     display: flex;
     justify-content: center;
-    gap: 20px;
+    gap: 1.25rem;
 }
 
 .btn {
-    padding: 10px 20px;
+    padding: 0.7rem 1.25rem;
     background-color: rgba(0,0,0,0.3);
     color: white;
     text-decoration: none;
