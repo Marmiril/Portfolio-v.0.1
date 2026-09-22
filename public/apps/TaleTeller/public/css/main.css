@@ -911,4 +911,11 @@ ul.tales-table a:hover {
         max-width: none;
         box-sizing: border-box;
     }
+
+    .auth-form {
+        width: 90%;
+        max-width: 28rem;
+        padding: 1.5rem;
+        box-sizing: border-box;
+    }
 }
