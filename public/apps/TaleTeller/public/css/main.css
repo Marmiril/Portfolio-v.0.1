@@ -879,4 +879,36 @@ ul.tales-table a:hover {
     .tale-meta-info {
         font-size: 1rem;
     }
+
+    .tale-form {
+        width: 95%;
+        max-width: none;
+    }
+
+    .meta-form {
+        width: 100%;
+        box-sizing: border-box;
+    }
+
+    .meta-form > div {
+        width: 100%;
+    }
+
+    .meta-form input,
+    .meta-form select {
+        max-width: none;
+        box-sizing: border-box;
+    }
+
+    .fragment-form {
+        width: 100%;
+        max-width: none;
+        box-sizing: border-box;
+    }
+
+    .fragment-form textarea {
+        width: 100%;
+        max-width: none;
+        box-sizing: border-box;
+    }
 }
