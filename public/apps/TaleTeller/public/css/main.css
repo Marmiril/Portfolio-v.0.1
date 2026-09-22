@@ -824,6 +824,7 @@ ul.tales-table a:hover {
         min-width: 0;
         max-width: none;
         padding: 1rem;
+        flex: 0 0 auto;
     }
 
     .column-main {
