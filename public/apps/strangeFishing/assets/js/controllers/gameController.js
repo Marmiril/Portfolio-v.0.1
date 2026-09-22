@@ -1,12 +1,14 @@
 import { initRandomFish } from "../utils/randomFish.js";
 import { showActionBox } from "../ui/actionBox.js";
 import { closeActionBox } from '../ui/actionBox.js';
-import { playBackgroundSound,
-         playLoseSound,
-         playPointSound,
-         playWinSound,
-         playBeginSound,
-         playCancelSound } from '../audio/soundManager.js';
+import {
+    playBackgroundSound,
+    playLoseSound,
+    playPointSound,
+    playWinSound,
+    playBeginSound,
+    playCancelSound
+} from '../audio/soundManager.js';
 
 export function initFishGameController() {
     const btnStartGame = document.getElementById('btnStartGame');
@@ -49,7 +51,34 @@ export function initFishGameController() {
         requestAnimationFrame(animate);
     }
 
-    btnStartGame.addEventListener('click', () => { actionGame(); });
+
+    ///////////////////////////////////////////////////////
+
+    async function enableLandscapeMode() {
+
+        // Only try on mobile-size screens
+        if (!window.matchMedia('(max-width: 900px)').matches) { return; }
+
+        const gameContainer = document.querySelector('.fishing-game');
+
+        try {
+
+            // Fullscreen is normally required before locking orientation
+            if (!document.fullscreenElement && gameContainer?.requestFullscreen) { await gameContainer.requestFullscreen(); }
+
+            if (screen.orientation?.lock) { await screen.orientation.lock('landscape'); }
+        } catch (error) {
+            console.warn('Landscape mode could not be enabled:', error);
+        }
+
+    }
+
+    ///////////////////////////////////////////////
+
+    btnStartGame.addEventListener('click', async () => {
+        await enableLandscapeMode();
+        actionGame();
+    });
 
     btnCancelGame.addEventListener('click', () => { cancelGame(); });
 
@@ -74,6 +103,8 @@ export function initFishGameController() {
                 btnCancelGame.style.display = 'none';
             }
         });
+
+
     }
 
     function spawnFish(durationMs, unitsPerTick, frequencyMs) {
@@ -117,7 +148,7 @@ export function initFishGameController() {
             clearFishes();
             demoFishes();
         }
-        
+
         isPlaying = true;
         // if (message) { message.textContent = ''; }
 
@@ -170,7 +201,8 @@ export function initFishGameController() {
                     action: () => {
                         clearFishes();
                         demoFishes();
-                        actionGame(); }
+                        actionGame();
+                    }
                 },
                 {
                     label: 'NO',
@@ -191,7 +223,7 @@ export function initFishGameController() {
         btnCancelGame.style.display = 'none';
 
         scoreBoard.textContent = `Score: ${score}`;
-       // demoFishes();
+        // demoFishes();
 
     }
 
@@ -208,15 +240,16 @@ export function initFishGameController() {
                     action: () => {
                         clearFishes();
                         demoFishes();
-                        actionGame();       
-                        hudTimer.textContent = 30;                                        
+                        actionGame();
+                        hudTimer.textContent = 30;
                     }
                 },
                 {
                     label: 'NO',
                     action: () => {
                         hudTimer.textContent = 30;
-                        resetGame(); }
+                        resetGame();
+                    }
                 }
             ]
         });
@@ -225,7 +258,7 @@ export function initFishGameController() {
     function timeOverBox() {
         playLoseSound();
         root.classList.remove('playing');
-        showActionBox({            
+        showActionBox({
             title: 'TIME-OVER - YOU LOSER!!',
             message: 'Play again?',
             type: 'decision',

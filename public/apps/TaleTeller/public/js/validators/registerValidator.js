@@ -17,7 +17,7 @@ export function validatePassword(password) {
     if (length < 4 || length > 16) {
         return {
             valid: false,
-            error: '`Password 4 - 16 characters'
+            error: 'Password 4 - 16 characters'
         };
     }
 
