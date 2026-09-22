@@ -316,3 +316,15 @@ h1 {
     transform: translate(0, 0);
     pointer-events: auto;
 }
+
+
+@media(max-width: 900px) {
+    #fish-controls {
+        position: fixed;
+        left: 50%;
+        bottom: 1.5rem;
+        transform: translateX(-50%);
+        z-index: 100;
+    }
+
+}
