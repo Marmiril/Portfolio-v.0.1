@@ -851,4 +851,32 @@ ul.tales-table a:hover {
     .columns > .column-side:last-child {
         order: 3;
     }
+
+    .fragment-box {
+        font-size: 1.2rem;
+    }
+
+    .frag-tale-title {
+        font-size: 1.6rem;
+    }
+
+    .frag-meta-info {
+        font-size: 1rem;
+    }
+
+    .tale {
+        font-size: 1rem;
+    }
+
+    .tale-chapter {
+        font-size: 1.25rem;
+    }
+
+    .tale-chapter footer {
+        font-size: 1rem;
+    }
+
+    .tale-meta-info {
+        font-size: 1rem;
+    }
 }
