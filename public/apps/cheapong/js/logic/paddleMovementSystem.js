@@ -1,6 +1,18 @@
 export function updatePlayerPaddle(paddle, inputState, canvasWidth) {
     paddle.prevX = paddle.x;
 
+    // Touch control
+    if (inputState.touchActive && inputState.touchX !== null) {
+        paddle.x = inputState.touchX - paddle.width / 2;
+
+        if (paddle.x < 0) { paddle.x = 0; }
+
+        if (paddle.x + paddle.width > canvasWidth) { paddle.x = canvasWidth - paddle.width; }
+
+        return;
+    }
+
+    // Keyboard control
     const isApplingSpin = inputState.down && (inputState.left || inputState.right);
 
     if (isApplingSpin) { return; }
