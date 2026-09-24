@@ -80,6 +80,7 @@ body {
     -webkit-backdrop-filter: blur(2px);
     border: 0.125rem solid rgb(4, 33, 249);
     display: block;
+    touch-action: none;
 }
 
 .game-area {

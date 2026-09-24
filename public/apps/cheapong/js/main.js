@@ -322,6 +322,16 @@ canvas.addEventListener("pointerup", (event) => {
 
     inputState.touchActive = false;
     inputState.touchX = null;
+
+    if (appState === AppState.MAIN_MENU) {
+        appState = AppState.IN_GAME;
+        playStart();
+        gameState = GameState.RPS;
+
+        const { backgroundImage } = setBackSystem(scoreSystem.getCurrentMatch());
+
+        cheapongPage.style.backgroundImage = `url_("${backgroundImage}")`;
+    }
 });
 
 
