@@ -55,7 +55,7 @@ export function renderMainMenu(ctx, canvasWidth, canvasHeight) {
 
     clearCanvas(ctx, canvasWidth, canvasHeight);
 
-    const isMobile = window.matchMedia("(max-width: 900px)").matches;
+    const isMobile = window.matchMedia("(max-width: 700px)").matches;
 
     drawCenteredText(
         ctx,

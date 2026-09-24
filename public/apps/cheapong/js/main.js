@@ -167,9 +167,6 @@ let cpuServePlanRank = null;
 // Stores when the CPU serve preparation started
 let cpuServeStartTime = null;
 
-// Pointer for mobiles
-let touchStartX = null
-
 /**
  * Renders the initial main menu.
  */
@@ -309,8 +306,6 @@ canvas.addEventListener("pointerdown", (event) => {
     const scaleX = canvas.width / rect.width;
 
     inputState.touchX = (event.clientX - rect.left) * scaleX;
-
-    touchStartX = inputState.touchX;
 });
 
 canvas.addEventListener("pointermove", (event) => {
@@ -330,7 +325,7 @@ canvas.addEventListener("pointerup", (event) => {
     const scaleY = canvas.height / rect.height;
 
     const touchX = (event.clientX - rect.left) * scaleX;
-    const touchY = (event.clientY - rect.left) * scaleY;
+    const touchY = (event.clientY - rect.top) * scaleY;
 
     inputState.touchActive = false;
     inputState.touchX = null;
@@ -343,7 +338,7 @@ canvas.addEventListener("pointerup", (event) => {
 
         const { backgroundImage } = setBackSystem(scoreSystem.getCurrentMatch());
 
-        cheapongPage.style.backgroundImage = `url_("${backgroundImage}")`;
+        cheapongPage.style.backgroundImage = `url("${backgroundImage}")`;
         return;
     }
 
