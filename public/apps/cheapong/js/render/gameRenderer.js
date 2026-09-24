@@ -52,11 +52,44 @@ export function drawCenteredText(ctx, canvasWidth, text, canvasHeight, fontSize 
 }
 
 export function renderMainMenu(ctx, canvasWidth, canvasHeight) {
+
     clearCanvas(ctx, canvasWidth, canvasHeight);
-    drawCenteredText(ctx, canvasWidth, "CHEAPONG", canvasHeight * 0.30, 30);
-    drawCenteredText(ctx, canvasWidth, "PRESS SPACE TO START", canvasHeight * 0.50, 25);
-    drawCenteredText(ctx, canvasWidth, "3 POINT FOR A MATCH", canvasHeight * 0.60, 16);
-    drawCenteredText(ctx, canvasWidth, "10 MATCHES FOR ETERNAL GLORY", canvasHeight * 0.70, 16);
+
+    const isMobile = window.matchMedia("(max-width: 900px)").matches;
+
+    drawCenteredText(
+        ctx,
+        canvasWidth,
+        "CHEAPONG",
+        canvasHeight * 0.30,
+        isMobile ? 48 : 30
+    );
+
+
+    drawCenteredText(
+        ctx,
+        canvasWidth,
+        "PRESS SPACE TO START",
+        canvasHeight * 0.50,
+        isMobile ? 36 : 25
+    );
+
+
+    drawCenteredText(
+        ctx,
+        canvasWidth,
+        "3 POINT FOR A MATCH",
+        canvasHeight * 0.60,
+        isMobile ? 24 : 16
+    );
+
+    drawCenteredText(
+        ctx,
+        canvasWidth,
+        "10 MATCHES FOR ETERNAL GLORY",
+        canvasHeight * 0.70,
+        isMobile ? 24 : 16
+    );
 }
 
 
