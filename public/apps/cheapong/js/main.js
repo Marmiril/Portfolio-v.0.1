@@ -167,6 +167,9 @@ let cpuServePlanRank = null;
 // Stores when the CPU serve preparation started
 let cpuServeStartTime = null;
 
+// Pointer for mobiles
+let touchStartX = null
+
 /**
  * Renders the initial main menu.
  */
@@ -306,6 +309,8 @@ canvas.addEventListener("pointerdown", (event) => {
     const scaleX = canvas.width / rect.width;
 
     inputState.touchX = (event.clientX - rect.left) * scaleX;
+
+    touchStartX = inputState.touchX;
 });
 
 canvas.addEventListener("pointermove", (event) => {
@@ -332,8 +337,39 @@ canvas.addEventListener("pointerup", (event) => {
 
         cheapongPage.style.backgroundImage = `url_("${backgroundImage}")`;
     }
-});
 
+    const rect = canvas.getBoundingClientRect();
+    const scaleX = canvas.width / rect.width;
+
+    const touchEndX = (event.clientX - rect.left) * scaleX;
+    const deltaX = touchEndX - touchStartX;
+
+    if (
+        appState === AppState.IN_GAME &&
+        gameState === GameState.RPS &&
+        rpsResult === null &&
+        cpuRpsSweepStartTime === null
+    ) {
+        const SWIPE_THRESHOLD = 60;
+
+        if (deltaX < -SWIPE_THRESHOLD) {
+            playSelection();
+
+            selectedRpsIndex =
+                (selectedRpsIndex - 1 + RPS_CHOICES.length)
+                % RPS_CHOICES.length;
+        }
+
+        if (deltaX > -SWIPE_THRESHOLD) {
+            playSelection();
+
+            selectedRpsIndex =
+                (selectedRpsIndex + 1)
+                % RPS_CHOICES.length;
+        }
+    }
+
+});
 
 canvas.addEventListener("pointercancel", () => {
     inputState.touchActive = false;
