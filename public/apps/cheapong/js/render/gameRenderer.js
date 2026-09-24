@@ -80,7 +80,7 @@ export function renderMainMenu(ctx, canvasWidth, canvasHeight) {
         canvasWidth,
         "3 POINT FOR A MATCH",
         canvasHeight * 0.60,
-        isMobile ? 24 : 16
+        isMobile ? 30 : 16
     );
 
     drawCenteredText(
@@ -88,7 +88,7 @@ export function renderMainMenu(ctx, canvasWidth, canvasHeight) {
         canvasWidth,
         "10 MATCHES FOR ETERNAL GLORY",
         canvasHeight * 0.70,
-        isMobile ? 24 : 16
+        isMobile ? 30 : 16
     );
 }
 
