@@ -297,7 +297,38 @@ window.addEventListener("keyup", (event) => {
     if (event.code === "ArrowDown") { inputState.down = false; }
 });
 
+canvas.addEventListener("pointerdown", (event) => {
+    if (event.pointerType === "mouse") { return; }
 
+    inputState.touchActive = true;
+
+    const rect = canvas.getBoundingClientRect();
+    const scaleX = canvas.width / rect.width;
+
+    inputState.touchX = (event.clientX - rect.left) * scaleX;
+});
+
+canvas.addEventListener("pointermove", (event) => {
+    if (event.pointerType === "mouse" || !inputState.touchActive) { return; }
+
+    const rect = canvas.getBoundingClientRect();
+    const scaleX = canvas.width / rect.width;
+
+    inputState.touchX = (event.clientX - rect.left) * scaleX;
+});
+
+canvas.addEventListener("pointerup", (event) => {
+    if (event.pointerType === "mouse") { return; }
+
+    inputState.touchActive = false;
+    inputState.touchX = null;
+});
+
+
+canvas.addEventListener("pointercancel", () => {
+    inputState.touchActive = false;
+    inputState.touchX = null;
+});
 /////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////
