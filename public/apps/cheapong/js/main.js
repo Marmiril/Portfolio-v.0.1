@@ -325,9 +325,17 @@ canvas.addEventListener("pointermove", (event) => {
 canvas.addEventListener("pointerup", (event) => {
     if (event.pointerType === "mouse") { return; }
 
+    const rect = canvas.getBoundingClientRect();
+    const scaleX = canvas.width / rect.width;
+    const scaleY = canvas.height / rect.height;
+
+    const touchX = (event.clientX - rect.left) * scaleX;
+    const touchY = (event.clientY - rect.left) * scaleY;
+
     inputState.touchActive = false;
     inputState.touchX = null;
 
+    // MAIN MENU 
     if (appState === AppState.MAIN_MENU) {
         appState = AppState.IN_GAME;
         playStart();
@@ -336,39 +344,52 @@ canvas.addEventListener("pointerup", (event) => {
         const { backgroundImage } = setBackSystem(scoreSystem.getCurrentMatch());
 
         cheapongPage.style.backgroundImage = `url_("${backgroundImage}")`;
+        return;
     }
 
-    const rect = canvas.getBoundingClientRect();
-    const scaleX = canvas.width / rect.width;
-
-    const touchEndX = (event.clientX - rect.left) * scaleX;
-    const deltaX = touchEndX - touchStartX;
-
+    // RPS
     if (
         appState === AppState.IN_GAME &&
         gameState === GameState.RPS &&
         rpsResult === null &&
         cpuRpsSweepStartTime === null
     ) {
-        const SWIPE_THRESHOLD = 60;
+        const imageSize = 160;
+        const gap = 40;
 
-        if (deltaX < -SWIPE_THRESHOLD) {
-            playSelection();
+        const totalWidth =
+            imageSize * RPS_CHOICES.length +
+            gap * (RPS_CHOICES.length - 1);
 
-            selectedRpsIndex =
-                (selectedRpsIndex - 1 + RPS_CHOICES.length)
-                % RPS_CHOICES.length;
+        const startX = (canvasWidth - totalWidth) / 2;
+        const imageY = canvasHeight * 0.35;
+
+        for (let i = 0; i < RPS_CHOICES.length; i++) {
+            const imageX = startX + i * (imageSize + gap);
+
+            const isInside =
+                touchX >= imageX &&
+                touchX <= imageX + imageSize &&
+                touchY >= imageY &&
+                touchY <= imageY + imageSize;
+
+            if (!isInside) { continue; }
+
+            selectedRpsIndex = i;
+            playerRpsChoice = RPS_CHOICES[selectedRpsIndex];
+
+            playRpsSelected();
+
+            cpuRpsChoice = getRandomCpuChoice();
+            cpuRpsDisplayIndex = 0;
+            cpuRpsSweepStartTime = performance.now();
+
+            playCpuSelection("PLAY");
+
+            return;
         }
 
-        if (deltaX > -SWIPE_THRESHOLD) {
-            playSelection();
-
-            selectedRpsIndex =
-                (selectedRpsIndex + 1)
-                % RPS_CHOICES.length;
-        }
     }
-
 });
 
 canvas.addEventListener("pointercancel", () => {
