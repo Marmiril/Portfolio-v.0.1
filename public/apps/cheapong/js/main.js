@@ -619,6 +619,7 @@ function updateGame() {
 function renderGameScreen() {
     clearCanvas(ctx, canvasWidth, canvasHeight);
 
+    const isMobile = window.matchMedia("(max-width: 700px").matches;
 
     drawPaddle(ctx, playerPaddle, "PLAYER");
     drawPaddle(ctx, cpuPaddle, "CPU");
