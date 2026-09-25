@@ -650,7 +650,9 @@ function renderGameScreen() {
         drawCenteredText(
             ctx,
             canvasWidth,
-            "PRESS SPACE FOR NEXT MATCH",
+            isMobile
+                ? "TOUCH FOR NEXT MATCH"
+                : "PRESS SPACE FOR NEXT MATCH",
             canvasHeight * 0.55,
             32
         );
