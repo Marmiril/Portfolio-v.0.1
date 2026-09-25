@@ -345,10 +345,34 @@ canvas.addEventListener("pointerup", (event) => {
     // RPS
     if (
         appState === AppState.IN_GAME &&
-        gameState === GameState.RPS &&
-        rpsResult === null &&
-        cpuRpsSweepStartTime === null
+        gameState === GameState.RPS
     ) {
+
+        // Ignore touches while CPU selection animation is running
+        if (cpuRpsSweepStartTime !== null) { return; }
+
+        // DRAW -> touch to play again RPS
+        if (rpsResult === RpsResult.DRAW) {
+            resetRpsRound();
+            return;
+        }
+
+        // RPS finished -> touch to continuee to serve
+        if (rpsResult !== null) {
+
+            if (nextServeState !== null) {
+                gameState = nextServeState;
+
+                resetPaddles();
+                resetRpsRound();
+
+                nextServeState = null
+            }
+
+            return;
+        }
+
+        // Select ROCK/PAPER/SCIISSORS
         const imageSize = 160;
         const gap = 40;
 
