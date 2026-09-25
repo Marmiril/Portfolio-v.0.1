@@ -425,6 +425,24 @@ canvas.addEventListener("pointerup", (event) => {
         }
 
     }
+
+    // NEXT MATCH
+    if (appState === AppState.IN_GAME &&
+        gameState === GameState.MATCH_OVER
+    ) {
+        const nextMatchStarted = scoreSystem.startNextMatch();
+        if (nextMatchStarted) {
+            currentDifficulty = getDifficultyByMatch(scoreSystem.getCurrentMatch());
+
+            const { backgroundImage } = setBackSystem(scoreSystem.getCurrentMatch());
+
+            cheapongPage.style.backgroundImage = `url("${backgroundImage}")`;
+
+            resetPaddles();
+            gameState = GameState.RPS;
+        }
+        return;
+    }
 });
 
 canvas.addEventListener("pointercancel", () => {
