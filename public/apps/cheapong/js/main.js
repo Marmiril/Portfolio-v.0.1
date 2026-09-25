@@ -443,6 +443,26 @@ canvas.addEventListener("pointerup", (event) => {
         }
         return;
     }
+
+    // GAME OVER
+
+    if (
+        appState === AppState.IN_GAME &&
+        gameState === GameState.GAME_OVER
+    ) {
+        scoreSystem.resetGame();
+
+        currentDifficulty = getDifficultyByMatch(scoreSystem.getCurrentMatch());
+        renderScore(scoreSystem, currentDifficulty);
+
+        resetPaddles();
+
+        gameState = GameState.SERVE_PLAYER;
+        appState = AppState.MAIN_MENU;
+
+        return;
+    }
+
 });
 
 canvas.addEventListener("pointercancel", () => {
