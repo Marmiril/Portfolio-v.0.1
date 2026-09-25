@@ -342,6 +342,22 @@ canvas.addEventListener("pointerup", (event) => {
         return;
     }
 
+
+    // PLAYER SERVE
+    if (
+        appState === AppState.IN_GAME &&
+        gameState === GameState.SERVE_PLAYER
+    ) {
+        gameState = launchPlayerServe(
+            ball,
+            inputState,
+            currentBallSpeed
+        );
+
+        playServe();
+        return;
+    }
+
     // RPS
     if (
         appState === AppState.IN_GAME &&
