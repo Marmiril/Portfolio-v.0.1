@@ -69,7 +69,7 @@ export function renderMainMenu(ctx, canvasWidth, canvasHeight) {
     drawCenteredText(
         ctx,
         canvasWidth,
-        "PRESS SPACE TO START",
+        isMobile ? "TOUCH TO START" : "PRESS SPACE TO START",
         canvasHeight * 0.50,
         isMobile ? 36 : 25
     );
