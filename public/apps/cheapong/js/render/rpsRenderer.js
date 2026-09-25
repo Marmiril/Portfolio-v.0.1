@@ -39,8 +39,9 @@ export function renderRpsScreen(
 ) {
     clearCanvas(ctx, canvasWidth, canvasHeight);
 
-    const message = `MATCH ${currentMatch} - CHOOSE YOUR MOVE`;
+    const isMobile = window.matchMedia("(max-width: 700px)").matches;
 
+    const message = `MATCH ${currentMatch} - CHOOSE YOUR MOVE`;
 
     drawCenteredText(
         ctx,
@@ -139,7 +140,9 @@ export function renderRpsScreen(
             drawCenteredText(
                 ctx,
                 canvasWidth,
-                "ARROWS TO CHOOSE - SPACE TO CONFIRM",
+                isMobile
+                    ? "TOUCH YOUR CHOICE"
+                    : "ARROWS TO CHOOSE - SPACE TO CONFIRM",
                 canvasHeight * 0.78,
                 18
             );
